@@ -75,6 +75,7 @@ void loop()
         }
         lastMode = currentMode;
     }
+    update();
     stripDesk.show();
     delay(40);
 }
@@ -108,6 +109,10 @@ updateMode()
         currentMode = MODE_GREEN;
     }
 }
+update(){
+    
+}
+
 void colorWipe(int32_t c)
 {
     for (int i = 0; i < NUM_LIGHTS_DESK; i++)
