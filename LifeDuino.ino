@@ -4,9 +4,7 @@
 #include <avr/power.h>
 #endif
 //OUTPUT PINS
-#define RING_PIN 7
-#define LEFT_PIN 6
-#define RIGHT_PIN 5
+#define DESK_PIN 6
 //INPUT PINS
 #define RIO_PINA 4
 #define RIO_PINB 3
@@ -19,16 +17,22 @@
 #define MODE_BLUE 3
 #define SHOWBOAT 4
 
-#define WHITE stripRing.color(255, 255, 255)
-#define GREEN stripRing.Color(0, 255, 0)
-#define RED stripRing.Color(255, 0, 0)
-#define BLUE stripRing.Color(0, 0, 255)
-#define YELLOW stripRing.Color(255, 255, 0)
-#define OFF stripRing.Color(0, 0, 0)
+#define WHITE stripDesk.Color(255, 255, 255)
+#define GREEN stripDesk.Color(0, 255, 0)
+#define RED stripDesk.Color(255, 0, 0)
+#define BLUE stripDesk.Color(0, 0, 255)
+#define YELLOW stripDesk.Color(255, 255, 0)
+#define OFF stripDesk.Color(0, 0, 0)
 
-Adafruit_NeoPixel stripRight = Adafruit_NeoPixel(18, RIGHT_PIN, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel stripLeft = Adafruit_NeoPixel(18, LEFT_PIN, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel stripRing = Adafruit_NeoPixel(16, RING_PIN, NEO_GRB + NEO_KHZ800);
+#define NUM_LIGHTS_DESK 200
+#define BRIGHTNESS_DESK 50
+Adafruit_NeoPixel stripDesk = Adafruit_NeoPixel(NUM_LIGHTS_DESK, DESK_PIN, NEO_GRB + NEO_KHZ800);
+
+int AState;
+int BState;
+int toggleState;
+int currentMode;
+int lastMode;
 
 void setup()
 {
@@ -39,31 +43,49 @@ void setup()
     pinMode(RIO_PINB, INPUT);
     pinMode(TOGGLE_PIN, INPUT);
 
-    pinMode(RING_PIN, OUTPUT);
-    pinMode(RIGHT_PIN, OUTPUT);
-    pinMode(LEFT_PIN, OUTPUT);
-
-    stripRight.begin();
-    stripRight.show();
-
-    stripLeft.begin();
-    stripLeft.show();
-
-    stripRing.begin();
-    stripRing.show();
-}
-
-int AState = 0;
-int BState = 0;
-int toggleState = 0;
-int currentMode = 0;
-void loop()
-{
-    // put your main code here, to run repeatedly:
-    AState = digitalRead(RIO_PINA);
-    BState = digitalRead(RIO_PINB);
+    pinMode(DESK_PIN, OUTPUT);
+    stripDesk.show();
+    stripDesk.setBrightness(50);
+    AState = 0;
+    BState = 0;
+    toggleState = 0;
     lastMode = -1;
     currentMode = 0;
+}
+
+void loop()
+{
+    updateInputs();
+    updateMode();
+    if (currentMode != lastMode)
+    {
+        switch (currentMode)
+        {
+        case MODE_YELLOW:
+            colorWipe(YELLOW);
+            break;
+        case MODE_GREEN:
+            colorWipe(GREEN);
+            break;
+        case MODE_RED:
+            colorWipe(RED);
+            break;
+        case MODE_BLUE:
+            colorWipe(BLUE);
+        }
+        lastMode = currentMode;
+    }
+    stripDesk.show();
+    delay(40);
+}
+updateInputs()
+{
+    AState = digitalRead(RIO_PINA);
+    BState = digitalRead(RIO_PINB);
+}
+updateMode()
+{
+
     if (AState == 1 && BState == 1)
     {
         currentMode = MODE_BLUE;
@@ -85,38 +107,11 @@ void loop()
     {
         currentMode = MODE_GREEN;
     }
-    if (currentMode != lastMode)
-    {
-        switch (currentMode)
-        {
-        case MODE_YELLOW:
-            colorWipe(YELLOW);
-            break;
-        case MODE_GREEN:
-            colorWipe(GREEN);
-            break;
-        case MODE_RED:
-            colorWipe(RED);
-            break;
-        case MODE_BLUE:
-            colorWipe(BLUE);
-        }
-        lastMode = curentMode;
-    }
-    stripLeft.show();
-    stripRight.show();
-    stripRing.show();
-    delay(40);
 }
 void colorWipe(int32_t c)
 {
-    for (int i = 0; i < 18; i++)
+    for (int i = 0; i < NUM_LIGHTS_DESK; i++)
     {
-        stripRight.setPixelColor(i, GREEN);
-        stripLeft.setPixelColor(i, GREEN);
-    }
-    for (int i = 0; i < 17; i++)
-    {
-        stripRing.setPixelColor(i, GREEN);
+        stripDesk.setPixelColor(i, c);
     }
 }
