@@ -101,6 +101,7 @@ void loop()
         case MODE_BLUE:
             colorWipe(BLUE);
         }
+        lastMode = curentMode;
     }
     stripLeft.show();
     stripRight.show();
