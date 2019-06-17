@@ -18,8 +18,10 @@
 #define MODE_YELLOW 1
 #define MODE_RED 2
 #define MODE_BLUE 3
+#define MODE_WHITE 3
 #define SHOWBOAT 4
 
+//COLOURS
 #define WHITE stripDesk.Color(255, 255, 255)
 #define GREEN stripDesk.Color(0, 255, 0)
 #define RED stripDesk.Color(255, 0, 0)
@@ -36,11 +38,14 @@ int BState;
 int toggleState;
 int currentMode;
 int lastMode;
-WipeModeStrategy deskModes[4] = {
-  WipeModeStrategy(WHITE, NUM_LIGHTS_DESK),
-  WipeModeStrategy(RED, NUM_LIGHTS_DESK),
-  WipeModeStrategy(GREEN, NUM_LIGHTS_DESK),
-  WipeModeStrategy(BLUE, NUM_LIGHTS_DESK)
+WipeModeStrategy WIPEWHITE = WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
+WipeModeStrategy WIPERED = WipeModeStrategy(RED, NUM_LIGHTS_DESK);
+WipeModeStrategy WIPEGREEN = WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
+WipeModeStrategy WIPEBLUE = WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
+int NUM_LIGHT_MODES = 5;
+LightModeStrategy* deskModes[5] = {
+  &WIPEBLUE, &WIPEWHITE, &WIPERED,
+  &WIPEGREEN, &WIPEBLUE
 };
 void setup()
 {
@@ -50,13 +55,9 @@ void setup()
   pinMode(RIO_PINA, INPUT);
   pinMode(RIO_PINB, INPUT);
   pinMode(TOGGLE_PIN, INPUT);
-
   pinMode(DESK_PIN, OUTPUT);
-  stripDesk.show();
-  stripDesk.setBrightness(100);
-  AState = 0;
-  BState = 0;
-  toggleState = 0;
+
+  stripDesk.setBrightness(BRIGHTNESS_DESK);
   lastMode = -1;
   currentMode = MODE_RED;
 }
@@ -67,12 +68,12 @@ void loop()
   updateMode();
   update();
   stripDesk.show();
-  delay(40);
 }
 void updateInputs()
 {
   AState = digitalRead(RIO_PINA);
   BState = digitalRead(RIO_PINB);
+
 }
 void updateMode()
 {
@@ -92,39 +93,20 @@ void updateMode()
 
   else if (AState == 0 && BState == 0)
   {
-    currentMode = MODE_RED;
+    currentMode = MODE_SHOWBOAT;
   }
   else
   {
     currentMode = MODE_RED;
   }
+  if (currentMode != lastMode)
+  {
+    deskModes[lastMode]->disable();
+  }
 }
 void update()
 {
-  if (currentMode != lastMode)
-  {
-    switch (currentMode)
-    {
-    case MODE_YELLOW:
-      colorWipe(YELLOW);
-      break;
-    case MODE_GREEN:
-      colorWipe(GREEN);
-      break;
-    case MODE_RED:
-      colorWipe(RED);
-      break;
-    case MODE_BLUE:
-      colorWipe(BLUE);
-    }
-    lastMode = currentMode;
-  }
-}
-
-void colorWipe(int32_t c)
-{
-  for (int i = 0; i < NUM_LIGHTS_DESK; i++)
-  {
-    stripDesk.setPixelColor(i, c);
-  }
+  deskModes[currentMode]->update(stripDesk);
+ // tvModes[tvMode]->update(stripTV);
+  lastMode = currentMode;
 }
