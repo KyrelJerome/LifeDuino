@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
 #include "LightModes/colorWipe.cpp"
-
+#include "Modules/LightingModule.cpp"
 #ifdef __AVR__
 #include <avr/power.h>
 #endif
@@ -15,13 +15,10 @@
 
 // DEFINE LIGHT MODES
 #define MODE_GREEN 0
-#define MODE_YELLOW 1
-#define MODE_RED 2
-#define MODE_BLUE 3
+#define MODE_RED 1
+#define MODE_BLUE 2
 #define MODE_WHITE 3
-#define SHOWBOAT 4
 
-//COLOURS
 #define WHITE stripDesk.Color(255, 255, 255)
 #define GREEN stripDesk.Color(0, 255, 0)
 #define RED stripDesk.Color(255, 0, 0)
@@ -43,10 +40,9 @@ WipeModeStrategy WIPERED = WipeModeStrategy(RED, NUM_LIGHTS_DESK);
 WipeModeStrategy WIPEGREEN = WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
 WipeModeStrategy WIPEBLUE = WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
 int NUM_LIGHT_MODES = 5;
-LightModeStrategy* deskModes[5] = {
+LightModeStrategy* deskModes[4] = {
   &WIPEBLUE, &WIPEWHITE, &WIPERED,
-  &WIPEGREEN, &WIPEBLUE
-};
+  &WIPEGREEN};
 void setup()
 {
   Serial.begin(9600);
@@ -84,7 +80,7 @@ void updateMode()
   }
   else if (AState == 1 && BState == 0)
   {
-    currentMode = MODE_YELLOW;
+    currentMode = MODE_WHITE;
   }
   else if (AState == 0 && BState == 1)
   {
@@ -93,7 +89,7 @@ void updateMode()
 
   else if (AState == 0 && BState == 0)
   {
-    currentMode = MODE_SHOWBOAT;
+    currentMode = MODE_GREEN;
   }
   else
   {
@@ -107,6 +103,6 @@ void updateMode()
 void update()
 {
   deskModes[currentMode]->update(stripDesk);
- // tvModes[tvMode]->update(stripTV);
+  tvModes[tvMode]->update(stripTV);
   lastMode = currentMode;
 }
