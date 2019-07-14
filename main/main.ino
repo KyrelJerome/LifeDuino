@@ -6,7 +6,7 @@
 #include <avr/power.h>
 #endif
 //OUTPUT PINS
-#define DESK_PIN 6
+#define DESK_PIN 8
 
 //INPUT PINS
 #define RIO_PINA 4
@@ -28,9 +28,10 @@
 #define BLUE stripDesk.Color(0, 0, 255)
 #define YELLOW stripDesk.Color(255, 255, 0)
 #define OFF stripDesk.Color(0, 0, 0)
+#define LED 13
 
-#define NUM_LIGHTS_DESK 200
-#define BRIGHTNESS_DESK 50
+#define NUM_LIGHTS_DESK 40
+#define BRIGHTNESS_DESK 100
 Adafruit_NeoPixel stripDesk = Adafruit_NeoPixel(NUM_LIGHTS_DESK, DESK_PIN, NEO_GRB + NEO_KHZ800);
 
 int AState;
@@ -49,6 +50,8 @@ LightModeStrategy* deskModes[5] = {
 };
 void setup()
 {
+  pinMode(LED, OUTPUT);   
+  
   Serial.begin(9600);
   // put your setup code here, to run once:
   //Sets RIO related pins to INPUT
@@ -64,6 +67,8 @@ void setup()
 
 void loop()
 {
+  digitalWrite(LED, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);      
   updateInputs();
   updateMode();
   update();
@@ -93,7 +98,7 @@ void updateMode()
 
   else if (AState == 0 && BState == 0)
   {
-    currentMode = MODE_SHOWBOAT;
+    currentMode = MODE_RED;
   }
   else
   {
@@ -101,12 +106,12 @@ void updateMode()
   }
   if (currentMode != lastMode)
   {
-    deskModes[lastMode]->disable();
+   // deskModes[lastMode]->disable();
   }
 }
 void update()
 {
-  deskModes[currentMode]->update(stripDesk);
+  deskModes[0]->update(stripDesk);
  // tvModes[tvMode]->update(stripTV);
   lastMode = currentMode;
 }
