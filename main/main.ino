@@ -42,7 +42,7 @@ int NUM_LIGHT_MODES = 5;
 LightModeStrategy* deskModes[4] = {
   &WIPEBLUE, &WIPEWHITE, &WIPERED,
   &WIPEGREEN};
-LightingModule computerDesk = LightingModule(NUM_LIGHTS_DESK)
+LightingModule computerDesk = LightingModule(NUM_LIGHTS_DESK);
 void setup()
 {
   Serial.begin(9600);
