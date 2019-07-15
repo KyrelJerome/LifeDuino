@@ -3,14 +3,17 @@
 class LightingModule(Module)
 {
 public:
-    Adafruit_NeoPixel *strip;
+    Adafruit_NeoPixel* strip;
     int currentMode;
     int lastMode;
     int numLights;
+    int brightness = 50;
 
     LightModeStrategy *modes;
-    LightingModule(int size; Adafruit_NeoPixel * strip, LightModeStrategy * lightModes) : Module
+    LightingModule(int num; int pin , LightModeStrategy * lightModes) : Module
     {
+        strip = malloc(sizeof(Adafruit_NeoPixel);
+        strip* = Adafruit_NeoPixel(num, pin, NEO_GRB + NEO_KHZ800);
         this->modes = lightModes;
         enabled = true;
         currentMode = 0;
@@ -38,7 +41,7 @@ public:
     void enable()
     {
         this.enabled = true;
-        strip.setBrightness(100);
+        strip.setBrightness(50);
         strip.show();
     }
     void disable()

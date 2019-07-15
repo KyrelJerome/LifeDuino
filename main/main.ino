@@ -28,7 +28,6 @@
 
 #define NUM_LIGHTS_DESK 200
 #define BRIGHTNESS_DESK 50
-Adafruit_NeoPixel stripDesk = Adafruit_NeoPixel(NUM_LIGHTS_DESK, DESK_PIN, NEO_GRB + NEO_KHZ800);
 
 int AState;
 int BState;
@@ -43,6 +42,7 @@ int NUM_LIGHT_MODES = 5;
 LightModeStrategy* deskModes[4] = {
   &WIPEBLUE, &WIPEWHITE, &WIPERED,
   &WIPEGREEN};
+LightingModule computerDesk = LightingModule(NUM_LIGHTS_DESK)
 void setup()
 {
   Serial.begin(9600);
@@ -52,8 +52,8 @@ void setup()
   pinMode(RIO_PINB, INPUT);
   pinMode(TOGGLE_PIN, INPUT);
   pinMode(DESK_PIN, OUTPUT);
-
   stripDesk.setBrightness(BRIGHTNESS_DESK);
+
   lastMode = -1;
   currentMode = MODE_RED;
 }
@@ -69,8 +69,8 @@ void updateInputs()
 {
   AState = digitalRead(RIO_PINA);
   BState = digitalRead(RIO_PINB);
-
 }
+
 void updateMode()
 {
 
