@@ -9,17 +9,17 @@
 //OUTPUT PINS
 #define DESK_PIN 13
 
-// DEFINE LIGHT MODES
-#define MODE_GREEN 0
+// DEFINE LIGHT LightModes
+#define MODE_WHITE 0
 #define MODE_RED 1
-#define MODE_BLUE 2
-#define MODE_WHITE 3
+#define MODE_GREEN 2
+#define MODE_BLUE 3
+#define MODE_OFF 4
 
 #define WHITE stripDesk.Color(255, 255, 255)
 #define GREEN stripDesk.Color(0, 255, 0)
 #define RED stripDesk.Color(255, 0, 0)
 #define BLUE stripDesk.Color(0, 0, 255)
-#define YELLOW stripDesk.Color(255, 255, 0)
 #define OFF stripDesk.Color(0, 0, 0)
 
 #define NUM_MODES_DESK 5
@@ -41,9 +41,8 @@ LightingModule computerDesk = void setup()
   pinMode(DESK_PIN, OUTPUT);
   stripDesk.setBrightness(BRIGHTNESS_DESK);
   lastMode = -1;
-  currentMode = MODE_RED;
   computerDesk = LightingModule(NUM_LIGHTS_DESK, DESK_PIN, lightModes, getDeskModes());
-
+  computerDesk.setState
 }
 
 
@@ -91,8 +90,8 @@ void updateMode()
 }
 void update()
 {
+  computerDesk.update();
   deskModes[currentMode]->update(stripDesk);
-  tvModes[tvMode]->update(stripTV);
   lastMode = currentMode;
 }
 
