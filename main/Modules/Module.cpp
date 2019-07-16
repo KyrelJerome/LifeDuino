@@ -2,7 +2,6 @@
 class Module
 { 
 public:
-
     bool enabled;
     virtual int getState() = 0;
     virtual void setState(int state);

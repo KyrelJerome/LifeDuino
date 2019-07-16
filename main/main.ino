@@ -26,23 +26,12 @@
 #define NUM_LIGHTS_DESK 200
 #define BRIGHTNESS_DESK 50
 
-
-int toggleState;
-int currentMode;
-int lastMode;
-
-int NUM_LIGHT_MODES = 5;
-LightModeStrategy* deskModes[4] = {
-  &WIPEBLUE, &WIPEWHITE, &WIPERED,
-  &WIPEGREEN};
-LightingModule computerDesk = void setup()
+LightingModule computerDesk;
 {
   Serial.begin(9600);
-  pinMode(DESK_PIN, OUTPUT);
-  stripDesk.setBrightness(BRIGHTNESS_DESK);
   lastMode = -1;
-  computerDesk = LightingModule(NUM_LIGHTS_DESK, DESK_PIN, lightModes, getDeskModes());
-  computerDesk.setState
+  computerDesk = LightingModule(NUM_LIGHTS_DESK, DESK_PIN, lightModes, &getDeskModes());
+  computerDesk.enable();
 }
 
 
@@ -51,59 +40,30 @@ void loop()
   updateInputs();
   updateMode();
   update();
-  stripDesk.show();
 }
 
 void updateInputs()
 {
-  AState = digitalRead(RIO_PINA);
-  BState = digitalRead(RIO_PINB);
 }
 
 void updateMode()
 {
 
-  if (AState == 1 && BState == 1)
-  {
-    currentMode = MODE_BLUE;
-  }
-  else if (AState == 1 && BState == 0)
-  {
-    currentMode = MODE_WHITE;
-  }
-  else if (AState == 0 && BState == 1)
-  {
-    currentMode = MODE_RED;
-  }
-  else if (AState == 0 && BState == 0)
-  {
-    currentMode = MODE_GREEN;
-  }
-  else
-  {
-    currentMode = MODE_RED;
-  }
-  if (currentMode != lastMode)
-  {
-    deskModes[lastMode]->disable();
-  }
 }
 void update()
 {
   computerDesk.update();
-  deskModes[currentMode]->update(stripDesk);
-  lastMode = currentMode;
 }
 
-LightModeStrategy* getModes(){
+LightModeStrategy* getDeskModes(){
   LightModeStrategy* modes = malloc(sizeof(LightModeStrategy*)*NUM_MODES_DESK);
   for(int i = 0; i < NUM_MODES_DESK; i ++){
       modes[i] = malloc(sizeof(LightModeStrategy));
   }
-  modes[0] = WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
-  modes[1] = WipeModeStrategy(RED, NUM_LIGHTS_DESK);
-  modes[2] = WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
-  modes[3] = WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
-  modes[4] = WipeModeStrategy(OFF, NUM_LIGHTS_DESK);
+  modes[0] = & WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
+  modes[1] = & WipeModeStrategy(RED, NUM_LIGHTS_DESK);
+  modes[2] = & WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
+  modes[3] = & WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
+  modes[4] = & WipeModeStrategy(OFF, NUM_LIGHTS_DESK);
   return modes;
 }

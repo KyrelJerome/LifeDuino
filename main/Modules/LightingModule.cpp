@@ -1,23 +1,29 @@
 #include <Adafruit_NeoPixel.h>
 #include "Module.cpp"
-class LightingModule(Module)
+class LightingModule : public Module
 {
-public:
     Adafruit_NeoPixel* strip;
     int currentMode;
     int lastMode;
     int numLights;
     int brightness = 50;
+    int modulePin;
+    public:
 
-    LightModeStrategy *modes;
-    LightingModule(int num; int pin , LightModeStrategy * lightModes) : Module
+    LightModeStrategy** modes;
+    LightingModule(int num, int pin , LightModeStrategy ** lightModes) : Module()
     {
-        strip = malloc(sizeof(Adafruit_NeoPixel);
-        strip* = Adafruit_NeoPixel(num, pin, NEO_GRB + NEO_KHZ800);
-        this->modes = lightModes;
+        pinMode(pin, OUTPUT);
+        strip = malloc(sizeof(Adafruit_NeoPixel));
+        (strip *) = Adafruit_NeoPixel(num, pin, NEO_GRB + NEO_KHZ800);
+        modes = lightModes;
+        modulePin = pin;
         enabled = true;
         currentMode = 0;
         lastMode = 0;
+    }
+    void setBrightness(int brightness){
+        brightness = 0;
     }
     int getState()
     {
@@ -27,14 +33,14 @@ public:
     {
         lastMode = currentMode;
         currentMode = mode;
-        deskModes[lastMode]->disable();
-        deskModes[currentMode]->enable();
+        modes[lastMode]->disable();
+        modes[currentMode]->enable();
     }
     void update()
     {
         if (enabled)
         {
-            modes[currentMode].update();
+            modes[currentMode]->update();
             strip.show();
         }
     }
