@@ -16,11 +16,11 @@
 #define MODE_BLUE 3
 #define MODE_OFF 4
 
-#define WHITE stripDesk.Color(255, 255, 255)
-#define GREEN stripDesk.Color(0, 255, 0)
-#define RED stripDesk.Color(255, 0, 0)
-#define BLUE stripDesk.Color(0, 0, 255)
-#define OFF stripDesk.Color(0, 0, 0)
+#define WHITE Adafruit_NeoPixel.Color(255, 255, 255)
+#define GREEN  Adafruit_NeoPixel.Color(0, 255, 0)
+#define RED  Adafruit_NeoPixel.Color(255, 0, 0)
+#define BLUE  Adafruit_NeoPixel.Color(0, 0, 255)
+#define OFF  Adafruit_NeoPixel.Color(0, 0, 0)
 
 #define NUM_MODES_DESK 5
 #define NUM_LIGHTS_DESK 200

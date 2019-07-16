@@ -20,8 +20,8 @@ public:
         }
     }
 
-    virtual void disable() = 0;
-
+    virtual void disable(Adafruit_NeoPixel strip) = 0;
+    virtual void enable(Adafruit_NeoPixel strip) = 0;
 protected:
     virtual void setup() = 0;
     virtual bool shouldSetup() = 0;
