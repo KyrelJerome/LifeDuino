@@ -15,16 +15,17 @@ class LightingModule : public Module
     {
         pinMode(pin, OUTPUT);
         strip = malloc(sizeof(Adafruit_NeoPixel));
-        *strip =  Adafruit_NeoPixel(pin, num);
+        *strip =  & Adafruit_NeoPixel(num, pin, NEO_GRB + NEO_KHZ800);
         modes = lightModes;
         modulePin = pin;
         enabled = true;
         currentMode = 0;
         lastMode = 0;
     }
-    void setBrightness(int brightness)
+    void setBrightness(int newBrightness)
     {
-        brightness = 0;
+        brightness =  newBrightness;
+        strip->setBrightness(brightness);
     }
     int getState()
     {
@@ -34,20 +35,20 @@ class LightingModule : public Module
     {
         lastMode = currentMode;
         currentMode = mode;
-        modes[lastMode]->disable(* strip);
-        modes[currentMode]->enable(* strip);
+        modes[lastMode]->disable();
+        modes[currentMode]->enable();
     }
     void update()
     {
         if (enabled)
         {
-            modes[currentMode]->update(* strip);
-            strip.show();
+            modes[currentMode]->update(strip);
+            strip->show();
         }
     }
     void enable()
     {
-        this.enabled = true;
+        enabled = true;
         strip->setBrightness(50);
         strip->show();
     }

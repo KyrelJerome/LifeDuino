@@ -8,7 +8,7 @@ public:
         numLights = nLights;
     }
 
-    void update(Adafruit_NeoPixel strip)
+    void update(Adafruit_NeoPixel* strip)
     {
         if (shouldSetup())
         {
@@ -20,11 +20,11 @@ public:
         }
     }
 
-    virtual void disable(Adafruit_NeoPixel strip) = 0;
-    virtual void enable(Adafruit_NeoPixel strip) = 0;
+    virtual void disable() = 0;
+    virtual void enable() = 0;
 protected:
     virtual void setup() = 0;
     virtual bool shouldSetup() = 0;
     virtual bool shouldUpdate() = 0;
-    virtual void _update(Adafruit_NeoPixel strip) = 0;
+    virtual void _update(Adafruit_NeoPixel* strip) = 0;
 };

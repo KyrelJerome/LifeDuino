@@ -6,12 +6,16 @@ public:
     bool hasWiped;
     bool hasSetup;
     uint32_t colour;
-    WipeModeStrategy(uint32_t colour, int numLights): LightModeStrategy(numLights)
+    WipeModeStrategy(uint32_t colour, int numLights) : LightModeStrategy(numLights)
     {
         this->hasWiped = false;
         this->colour = colour;
     }
     void disable()
+    {
+        hasWiped = true;
+    }
+    void enable()
     {
         hasWiped = false;
     }
@@ -23,17 +27,17 @@ protected:
     }
     bool shouldSetup()
     {
-        return true;
+        return !hasSetup;
     }
     bool shouldUpdate()
     {
         return !this->hasWiped;
     }
-    void _update(Adafruit_NeoPixel strip)
+    void _update(Adafruit_NeoPixel *strip)
     {
         for (int i = 0; i < numLights; i++)
         {
-            strip.setPixelColor(i, colour);
+            strip->setPixelColor(i, colour);
         }
         this->hasWiped = true;
     }
