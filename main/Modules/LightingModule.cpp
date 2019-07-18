@@ -2,29 +2,33 @@
 #include "Module.cpp"
 class LightingModule : public Module
 {
-    Adafruit_NeoPixel* strip;
+    Adafruit_NeoPixel *strip;
     int currentMode;
-    int lastMode;
+    int numModes;
     int numLights;
-    int brightness = 50;
+    int brightness;
     int modulePin;
-    public:
-
-    LightModeStrategy** modes;
-    LightingModule(int num, int pin , LightModeStrategy ** lightModes) : Module()
+    int lastMode;
+public:
+    LightModeStrategy **modes;
+    LightingModule(int totalModes, int totalLights, int pin, LightModeStrategy **lightModes) : Module()
     {
-        pinMode(pin, OUTPUT);
+        pinMode(pin, OUTPUT);   
         strip = malloc(sizeof(Adafruit_NeoPixel));
-        *strip =  & Adafruit_NeoPixel(num, pin, NEO_GRB + NEO_KHZ800);
+        *strip = &Adafruit_NeoPixel(totalLights, pin, NEO_GRB + NEO_KHZ800);
         modes = lightModes;
+        brightness = 50;
         modulePin = pin;
         enabled = true;
         currentMode = 0;
         lastMode = 0;
     }
+    int totalStates(){
+        return numModes;
+    }
     void setBrightness(int newBrightness)
     {
-        brightness =  newBrightness;
+        brightness = newBrightness;
         strip->setBrightness(brightness);
     }
     int getState()
@@ -33,10 +37,13 @@ class LightingModule : public Module
     }
     void setState(int mode)
     {
-        lastMode = currentMode;
-        currentMode = mode;
-        modes[lastMode]->disable();
-        modes[currentMode]->enable();
+        if (mode < numModes)
+        {
+            lastMode = currentMode;
+            currentMode = mode;
+            modes[lastMode]->disable();
+            modes[currentMode]->enable();
+        }
     }
     void update()
     {
