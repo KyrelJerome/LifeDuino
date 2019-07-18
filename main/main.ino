@@ -5,11 +5,6 @@
 #ifdef __AVR__
 #include <avr/power.h>
 #endif
-<<<<<<< HEAD
-//OUTPUT PINS
-#define DESK_PIN 8
-=======
->>>>>>> modules
 
 //OUTPUT PINS
 #define DESK_PIN 13
@@ -19,23 +14,6 @@
 #define MODE_RED 1
 #define MODE_GREEN 2
 #define MODE_BLUE 3
-<<<<<<< HEAD
-#define MODE_WHITE 3
-#define SHOWBOAT 4
-
-//COLOURS
-#define WHITE stripDesk.Color(255, 255, 255)
-#define GREEN stripDesk.Color(0, 255, 0)
-#define RED stripDesk.Color(255, 0, 0)
-#define BLUE stripDesk.Color(0, 0, 255)
-#define YELLOW stripDesk.Color(255, 255, 0)
-#define OFF stripDesk.Color(0, 0, 0)
-#define LED 13
-
-#define NUM_LIGHTS_DESK 40
-#define BRIGHTNESS_DESK 100
-Adafruit_NeoPixel stripDesk = Adafruit_NeoPixel(NUM_LIGHTS_DESK, DESK_PIN, NEO_GRB + NEO_KHZ800);
-=======
 #define MODE_OFF 4
 #define light
 #define WHITE Adafruit_NeoPixel(0,0,NEO_GRB + NEO_KHZ800).Color(255, 255, 255)
@@ -47,7 +25,6 @@ Adafruit_NeoPixel stripDesk = Adafruit_NeoPixel(NUM_LIGHTS_DESK, DESK_PIN, NEO_G
 #define NUM_MODES_DESK 5
 #define NUM_LIGHTS_DESK 200
 #define BRIGHTNESS_DESK 50
->>>>>>> modules
 
 LightingModule* computerDesk;
 void setup()
@@ -77,39 +54,6 @@ void updateInputs()
 void updateMode()
 {
 
-<<<<<<< HEAD
-  if (AState == 1 && BState == 1)
-  {
-    currentMode = MODE_BLUE;
-  }
-  else if (AState == 1 && BState == 0)
-  {
-    currentMode = MODE_YELLOW;
-  }
-  else if (AState == 0 && BState == 1)
-  {
-    currentMode = MODE_RED;
-  }
-
-  else if (AState == 0 && BState == 0)
-  {
-    currentMode = MODE_RED;
-  }
-  else
-  {
-    currentMode = MODE_RED;
-  }
-  if (currentMode != lastMode)
-  {
-   // deskModes[lastMode]->disable();
-  }
-}
-void update()
-{
-  deskModes[0]->update(stripDesk);
- // tvModes[tvMode]->update(stripTV);
-  lastMode = currentMode;
-=======
 }
 void update()
 {
@@ -127,5 +71,4 @@ LightModeStrategy** getDeskModes(){
   modes[3] = &WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
   modes[4] = &WipeModeStrategy(OFF, NUM_LIGHTS_DESK);
   return modes;
->>>>>>> modules
 }
