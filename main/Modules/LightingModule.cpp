@@ -6,23 +6,24 @@ class LightingModule : public Module
     int currentMode;
     int numModes;
     int numLights;
-    int brightness = 50;
+    int brightness;
     int modulePin;
     int lastMode;
 public:
     LightModeStrategy **modes;
     LightingModule(int totalModes, int totalLights, int pin, LightModeStrategy **lightModes) : Module()
     {
-        pinMode(pin, OUTPUT);
+        pinMode(pin, OUTPUT);   
         strip = malloc(sizeof(Adafruit_NeoPixel));
         *strip = &Adafruit_NeoPixel(totalLights, pin, NEO_GRB + NEO_KHZ800);
         modes = lightModes;
+        brightness = 50;
         modulePin = pin;
         enabled = true;
         currentMode = 0;
         lastMode = 0;
     }
-    int getTotalStates(){
+    int totalStates(){
         return numModes;
     }
     void setBrightness(int newBrightness)

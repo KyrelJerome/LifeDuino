@@ -3,6 +3,9 @@
 #include "LightModes/colorWipe.cpp"
 #include "Modules/LightingModule.cpp"
 #include "LightModes/RainbowGlow.cpp"
+#include "Controllers/controller.cpp"
+#include "Controllers/buttonController.cpp"
+
 #ifdef __AVR__
 #include <avr/power.h>
 #endif
@@ -29,28 +32,29 @@
 #define BRIGHTNESS_DESK 50
 
 
-#define INPUTDELAY 300
 
-int mode;
 LightingModule* computerDesk;
 void setup()
 {
   Serial.begin(9600);
   Serial.println("Beginning Setup");
-  mode = 0;
   computerDesk = &LightingModule(NUM_MODES_DESK, NUM_LIGHTS_DESK, DESK_PIN, getDeskModes());
+  
   computerDesk->setBrightness(0);
   computerDesk->enable();
-  
+  computerDesk->setState(0);
+  computerDesk->update();
   Serial.println("Setup Complete");
 }
 
 
 void loop()
-{
+{  
+  Serial.println("Loop");
   updateInputs();
   updateMode();
   update();
+  delay(50);
 }
 
 void updateInputs()

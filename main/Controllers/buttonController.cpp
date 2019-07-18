@@ -1,35 +1,67 @@
 #include <Adafruit_NeoPixel.h>
-#include "../Modules/Module.cpp"
 
-#define INPUTDELAY 300
-class ButtonController : public Controller
+#define REGISTERDELAY 300
+class Button : public Controller
 {
 public:
-    Module *module;
-    #define INPUTDELAY 300
-
+    int pin;
     int enabled;
-    Button(): Controller()
+    int state;
+    int lastState;
+    int pressRegistered;
+    Module* module;
+    long stateStartTime;
+    Button(int buttonPin, Module* actuator) : Controller()
     {
+        module = actuator;
+        pin = buttonPin;
+        pinMode(pin, INPUT);
     }
-    void init(){
-        enabled = true;
+    void init()
+    {
+        enable();
     }
     void update()
     {
+        state = digitalRead(pin);
         if (enabled)
         {
-            if(){
-
+            if (state != lastState)
+            {
+                stateStartTime = millis();
+                if (lastState == HIGH)
+                {
+                    pressRegistered = false;
+                }
+            }
+            else if(millis() - stateStartTime > REGISTERDELAY && !pressRegistered ){
+                pressRegistered = true;
+                int moduleState = module->getState() + 1;
+                if(moduleState < module->totalStates()){
+                    module->setState(moduleState);
+                }
+                else{
+                    module->setState(0);
+                }
             }
         }
     }
     void enable()
     {
-
+        enabled = true;
+        pressRegistered = false;
+        lastState = digitalRead(pin);
+        pinMode(pin, INPUT);
+        state = lastState;
     }
     void disable()
     {
+        enabled = false;
+    }
 
+protected:
+    int getButtonState()
+    {
+        return state;
     }
 };
