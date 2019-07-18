@@ -51,14 +51,8 @@ void setup()
 
 
 void loop()
-<<<<<<< HEAD
-{
-  digitalWrite(LED, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);      
-=======
 {  
   Serial.println("Loop");
->>>>>>> controller
   updateInputs();
   updateMode();
   update();
