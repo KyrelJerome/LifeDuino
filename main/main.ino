@@ -31,21 +31,31 @@
 #define NUM_LIGHTS_DESK 200
 #define BRIGHTNESS_DESK 50
 
+LightModeStrategy** getDeskModes(){
+  LightModeStrategy** modes = malloc(sizeof(LightModeStrategy*)*NUM_MODES_DESK);
+  for(int i = 0; i < NUM_MODES_DESK; i ++){
+      modes[i] = malloc(sizeof(LightModeStrategy));
+  }
+  modes[0] = &WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
+  modes[1] = &WipeModeStrategy(RED, NUM_LIGHTS_DESK);
+  modes[2] = &WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
+  modes[3] = &WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
+  modes[4] = &RainbowGlowStrategy(NUM_LIGHTS_DESK);
+  modes[5] = &WipeModeStrategy(OFF, NUM_LIGHTS_DESK);
+  return modes;
+}
 
-
-LightingModule* computerDesk;
+LightingModule computerDesk = LightingModule(NUM_MODES_DESK, NUM_LIGHTS_DESK, DESK_PIN, getDeskModes());
 void setup()
 {
-  pinMode(LED, OUTPUT);   
   
   Serial.begin(9600);
-  Serial.println("Beginning Setup");
-  computerDesk = &LightingModule(NUM_MODES_DESK, NUM_LIGHTS_DESK, DESK_PIN, getDeskModes());
+  Serial.println("Beginning Setup"); 
   
-  computerDesk->setBrightness(0);
-  computerDesk->enable();
-  computerDesk->setState(0);
-  computerDesk->update();
+  computerDesk.setBrightness(0);
+  computerDesk.enable();
+  computerDesk.setState(0);
+  computerDesk.update();
   Serial.println("Setup Complete");
 }
 
@@ -70,19 +80,6 @@ void updateMode()
 }
 void update()
 {
-  computerDesk->update();
+  computerDesk.update();
 }
 
-LightModeStrategy** getDeskModes(){
-  LightModeStrategy** modes = malloc(sizeof(LightModeStrategy*)*NUM_MODES_DESK);
-  for(int i = 0; i < NUM_MODES_DESK; i ++){
-      modes[i] = malloc(sizeof(LightModeStrategy));
-  }
-  modes[0] = &WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
-  modes[1] = &WipeModeStrategy(RED, NUM_LIGHTS_DESK);
-  modes[2] = &WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
-  modes[3] = &WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
-  modes[4] = &RainbowGlowStrategy(NUM_LIGHTS_DESK);
-  modes[5] = &WipeModeStrategy(OFF, NUM_LIGHTS_DESK);
-  return modes;
-}

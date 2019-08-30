@@ -28,15 +28,21 @@ public:
     }
     void setBrightness(int newBrightness)
     {
+        Serial.println("Module: Brightness Set");
+        delay(1000);
         brightness = newBrightness;
         strip->setBrightness(brightness);
     }
     int getState()
     {
+        Serial.println("Module: Getting State ");
+        delay(1000);
         return currentMode;
     }
     void setState(int mode)
     {
+        Serial.println("Module: State Set");
+        delay(1000);
         if (mode < numModes)
         {
             lastMode = currentMode;
@@ -47,11 +53,19 @@ public:
     }
     void update()
     {
+        Serial.println("Module: Updating");
+        delay(1000);
         if (enabled)
         {
+            Serial.println("Module: Updating Strip");
+            delay(1000);
             modes[currentMode]->update(strip);
+            Serial.println("Module: Showing Strip");
+            delay(1000);
             strip->show();
         }
+        Serial.println("Module: Updated");
+        delay(1000);
     }
     void enable()
     {

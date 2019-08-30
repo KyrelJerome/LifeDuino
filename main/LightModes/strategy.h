@@ -10,12 +10,19 @@ public:
 
     void update(Adafruit_NeoPixel* strip)
     {
+        Serial.println("LightStrategy: Updating");
+        delay(1000);
         if (shouldSetup())
         {
+            Serial.println("LightStrategy: Calling internal setup strip");
+            delay(1000);
             setup();
         }
         if (shouldUpdate())
         {
+            
+            Serial.println("LightStrategy: Calling internal Update strip");
+            delay(1000);
             _update(strip);
         }
     }
