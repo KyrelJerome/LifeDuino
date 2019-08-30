@@ -71,12 +71,13 @@ void loop()
 
 void updateInputs()
 {
+  //controller updateInputs
   
 }
 
 void updateMode()
 {
-
+  //controller updateState
 }
 void update()
 {
