@@ -15,7 +15,7 @@ public:
     {
         pinMode(pin, OUTPUT);   
         strip = malloc(sizeof(Adafruit_NeoPixel));
-        *strip = &Adafruit_NeoPixel(totalLights, pin, NEO_GRB + NEO_KHZ800);
+        *strip  = Adafruit_NeoPixel(totalLights, pin, NEO_GRB + NEO_KHZ800);
         modes = lightModes;
         brightness = 50;
         modulePin = pin;
@@ -49,6 +49,9 @@ public:
             currentMode = mode;
             modes[lastMode]->disable();
             modes[currentMode]->enable();
+        }
+        else{
+            Serial.println("Module: Mode out of bounds wtf!")
         }
     }
     void update()
