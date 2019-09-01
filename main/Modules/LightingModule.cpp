@@ -51,7 +51,7 @@ public:
             modes[currentMode]->enable();
         }
         else{
-            Serial.println("Module: Mode out of bounds wtf!")
+            Serial.println("Module: Mode out of bounds wtf!");
         }
     }
     void update()

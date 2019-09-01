@@ -33,15 +33,18 @@
 
 LightModeStrategy** getDeskModes(){
   LightModeStrategy** modes = malloc(sizeof(LightModeStrategy*)*NUM_MODES_DESK);
-  for(int i = 0; i < NUM_MODES_DESK; i ++){
-      modes[i] = malloc(sizeof(LightModeStrategy));
-  }
-  modes[0] = &WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
-  modes[1] = &WipeModeStrategy(RED, NUM_LIGHTS_DESK);
-  modes[2] = &WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
-  modes[3] = &WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
-  modes[4] = &RainbowGlowStrategy(NUM_LIGHTS_DESK);
-  modes[5] = &WipeModeStrategy(OFF, NUM_LIGHTS_DESK);
+  modes[0] = malloc(sizeof(WipeModeStrategy));
+  modes[1] = malloc(sizeof(WipeModeStrategy));
+  modes[2] = malloc(sizeof(WipeModeStrategy));
+  modes[3] = malloc(sizeof(WipeModeStrategy));
+  modes[4] = malloc(sizeof(RainbowGlowStrategy));
+  modes[5] = malloc(sizeof(WipeModeStrategy));
+  *(modes[0]) = WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
+  *(modes[1]) = WipeModeStrategy(RED, NUM_LIGHTS_DESK);
+  *(modes[2]) = WipeModeStrategy(GREEN, NUM_LIGHTS_DESK);
+  *(modes[3]) = WipeModeStrategy(BLUE, NUM_LIGHTS_DESK);
+  *(modes[4]) = RainbowGlowStrategy(NUM_LIGHTS_DESK);
+  *(modes[5]) = WipeModeStrategy(OFF, NUM_LIGHTS_DESK);
   return modes;
 }
 
