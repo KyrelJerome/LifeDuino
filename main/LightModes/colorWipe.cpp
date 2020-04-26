@@ -10,29 +10,35 @@ public:
     {
         this->hasWiped = false;
         this->colour = colour;
+        this->hasSetup = 0;
     }
     void disable()
     {
-        hasWiped = true;
+        this->hasWiped = true;
     }
     void enable()
     {
-        hasWiped = false;
+        this->hasWiped = false;
     }
 
-protected:
     void setup()
     {
         this->hasSetup = true;
     }
+
     bool shouldSetup()
     {
-        return !hasSetup;
+        //return !(this->hasSetup);
+        Serial.println("setup marker");
+        delay(1000);
+        return false ;
     }
+
     bool shouldUpdate()
     {
-        return !this->hasWiped;
+        return !(this->hasWiped);
     }
+    
     void _update(Adafruit_NeoPixel *strip)
     {
         for (int i = 0; i < numLights; i++)

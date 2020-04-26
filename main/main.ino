@@ -36,7 +36,7 @@ LightModeStrategy** getDeskModes(){
   modes[0] = malloc(sizeof(WipeModeStrategy));
   modes[1] = malloc(sizeof(WipeModeStrategy));
   modes[2] = malloc(sizeof(WipeModeStrategy));
-  modes[3] = malloc(sizeof(WipeModeStrategy));
+  modes[3] = malloc(sizeof(WipeModeStrategy     ));
   modes[4] = malloc(sizeof(RainbowGlowStrategy));
   modes[5] = malloc(sizeof(WipeModeStrategy));
   *(modes[0]) = WipeModeStrategy(WHITE, NUM_LIGHTS_DESK);
@@ -53,13 +53,15 @@ void setup()
 {
   
   Serial.begin(9600);
-  Serial.println("Beginning Setup"); 
-  
+  Serial.println("Main: Beginning Setup"); 
   computerDesk.setBrightness(0);
+  Serial.println("Setup: Brightness Set");
   computerDesk.enable();
+  Serial.println("Setup: Desk Enabled");
+
   computerDesk.setState(0);
   computerDesk.update();
-  Serial.println("Setup Complete");
+  Serial.println("Setup: Setup Complete");
 }
 
 
@@ -86,4 +88,3 @@ void update()
 {
   computerDesk.update();
 }
-

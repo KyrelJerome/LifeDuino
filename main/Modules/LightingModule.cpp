@@ -22,6 +22,7 @@ public:
         enabled = true;
         currentMode = 0;
         lastMode = 0;
+        numModes = totalModes;
     }
     int totalStates(){
         return numModes;
@@ -41,18 +42,25 @@ public:
     }
     void setState(int mode)
     {
-        Serial.println("Module: State Set");
+        Serial.println("Module: Setting State");
         delay(1000);
         if (mode < numModes)
         {
+            Serial.println(lastMode);
+            Serial.println(currentMode);
+            Serial.println("Module: Can set state!");
+            delay(1000);
             lastMode = currentMode;
             currentMode = mode;
-            modes[lastMode]->disable();
-            modes[currentMode]->enable();
+            (*(modes[lastMode])).disable();
+            (*(modes[currentMode])).enable();
         }
         else{
             Serial.println("Module: Mode out of bounds wtf!");
         }
+        Serial.println("Module: State Set");
+        delay(1000);
+
     }
     void update()
     {

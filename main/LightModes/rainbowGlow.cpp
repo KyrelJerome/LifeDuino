@@ -8,37 +8,34 @@ public:
     bool hasSetup;
     RainbowGlowStrategy(int numLights) : LightModeStrategy(numLights)
     {
+        firstPixelHue = 0;
+        lastUpdate = millis();
+        this->hasSetup = 0;
     }
     void disable()
     {
-        
     }
     void enable()
     {
-        hasSetup = false;
+        this->hasSetup = false;
     }
-
-protected:
     void setup()
     {
-        firstPixelHue = 0;
-        lastUpdate = millis();
+        this->firstPixelHue = 0;
+        this->lastUpdate = millis();
         this->hasSetup = true;
     }
     bool shouldSetup()
     {
-        return !hasSetup;
+        return !(this->hasSetup);
     }
     bool shouldUpdate()
-    {    
-        if (lastUpdate + updateDelay <= millis() ){
-            return false;
-        }
-        return true;
-    }
-    void _update(Adafruit_NeoPixel * strip)
     {
-        firstPixelHue += 256;
+        return !(this->lastUpdate + updateDelay <= millis());
+    }
+    void _update(Adafruit_NeoPixel *strip)
+    {
+        this->firstPixelHue += 256;
         if (firstPixelHue > 5 * 65536)
         {
             firstPixelHue = 0;
@@ -56,7 +53,7 @@ protected:
             // before assigning to each pixel:
             strip->setPixelColor(i, strip->gamma32(strip->ColorHSV(pixelHue)));
         }
-        lastUpdate = millis();
+        this->lastUpdate = millis();
         strip->show(); // Update strip with new contents
     }
 };
