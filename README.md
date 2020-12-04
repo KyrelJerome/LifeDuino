@@ -1,5 +1,4 @@
-# LifeDuino - Your World, Enhanced
-
+# LifeDuino - The Small Things
 
 ## Setup
 ### Lights
