@@ -1,4 +1,4 @@
-# LifeDuino - The Small Things
+# LifeDuino - Automate the Small Things
 
 ## Setup
 ### Lights
@@ -6,12 +6,10 @@
 2. Follow the instructions to use Adafruit Neopixel Libraries here: https://github.com/adafruit/Adafruit_NeoPixel
 3. Clone this repository
 4. Open the folder with cloned repository in VS Code.
-
-## Plans
+5. Add your preferred object on a given pin.
 ### 1. Desk lights
-  - A. Single-color lighting Modes
-  - B. Slow-Changing color lighting modes
-  - C. "Party" Lighting modes.  
+  - A. Lighting Modes
+## Plans
 ### 2. IR Remote control viability.
 ### 3. Current Mode display
 ### 4. Window Open/Close
